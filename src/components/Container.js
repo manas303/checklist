@@ -17,11 +17,11 @@ export default function SimpleContainer() {
       <Container maxWidth="md">
         <Typography component="div" style={{ backgroundColor: '#3163c7', height: '180vh' }} >
             
-            <ChecklistOriginal name="Coles" id={uuid()} />
+            <ChecklistOriginal name="Coles" id="1" />
             <br/>
-            <ChecklistOriginal name="Indian Store " id={uuid()}/>
+            <ChecklistOriginal name="Indian Store " id="2"/>
             <br/>
-            <ChecklistOriginal name="Big Daddy's" id={uuid()}/>
+            <ChecklistOriginal name="Big Daddy's" id="3"/>
             </Typography>
       </Container>
     </React.Fragment>
