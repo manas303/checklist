@@ -1,0 +1,6 @@
+  505  aws ecr get-login-password --region ap-southeast-2
+  506  docker login --username AWS -p password 029519867493.dkr.ecr.ap-southeast-2.amazonaws.com
+  aws ecr create-repository --repository-name checklist-api --image-scanning-configuration scanOnPush=true --image-tag-mutability MUTABLE
+ 570  docker build -t checklist-api .
+  571  docker tag checklist-api:latest 029519867493.dkr.ecr.ap-southeast-2.amazonaws.com/checklist-api:latest
+  572  docker push 029519867493.dkr.ecr.ap-southeast-2.amazonaws.com/checklist-api:latest

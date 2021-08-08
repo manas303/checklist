@@ -13,16 +13,16 @@ export default (props) => {
         let mounted = true;
         getData()
             .then(items => {
-               
-                    console.log("response received", JSON.stringify(items));
-                    
-                    setToppings((toppingsOld)=>{
-                        return items.toppings.length> 0? items.toppings : toppingsOld
-                    });
-                }
+
+                console.log("response received", JSON.stringify(items));
+
+                setToppings((toppingsOld) => {
+                    return items.toppings.length > 0 ? items.toppings : toppingsOld
+                });
+            }
             )
         //return false;
-    },[]);
+    }, []);
 
     const getData = () => {
 
@@ -31,7 +31,7 @@ export default (props) => {
             "method": "get"
         };
         console.log('posting request', JSON.stringify(payload));
-        const response = fetch('https://hd2qhu9eii.execute-api.ap-southeast-2.amazonaws.com/default/checklist-api',
+        const response = fetch('https://gaha9omme7.execute-api.ap-southeast-2.amazonaws.com/default/checklist-api',
             {
                 method: 'POST',
                 body: JSON.stringify(payload),
@@ -118,11 +118,11 @@ export default (props) => {
         setToppings(updatedToppings);
     }
 
-    var flatten = function(obj) {
+    var flatten = function (obj) {
         if (obj === null) {
             return null;
         }
-    
+
         if (Array.isArray(obj)) {
             var newObj = [];
             for (var i = 0; i < obj.length; i++) {
@@ -135,9 +135,9 @@ export default (props) => {
             }
             return newObj;
         }
-    
+
         var result = Object.create(obj);
-        for(var key in result) {
+        for (var key in result) {
             if (typeof result[key] === 'object') {
                 result[key] = flatten(result[key]);
             }
@@ -151,19 +151,16 @@ export default (props) => {
     const save = () => {
         const updatedToppings = Object.assign(toppings);
         console.log('updated value' + updatedToppings);
-        var payload = {
-            "id": props.id,
-            "toppings": updatedToppings
-        };
-        var flattenedPayload = flatten(payload);
+        
+        var flattenedPayload = flatten(updatedToppings);
         console.log('posting request', JSON.stringify(flattenedPayload));
         var arr = makeArray(flattenedPayload);
         console.log('posting request', JSON.stringify(arr));
         var request = {
-            "id":props.id,
-            "toppings":arr
+            "id": props.id,
+            "toppings": arr
         }
-        const response = fetch('https://hd2qhu9eii.execute-api.ap-southeast-2.amazonaws.com/default/checklist-api',
+        const response = fetch('https://gaha9omme7.execute-api.ap-southeast-2.amazonaws.com/default/checklist-api',
             {
                 method: 'POST',
                 body: JSON.stringify(request),
@@ -177,9 +174,9 @@ export default (props) => {
 
     const makeArray = (item) => {
         var arr;
-        if(Array.isArray(item.toppings) ==false){
-            arr = Object.values(item.toppings);
-        }else{
+        if (Array.isArray(item) == false) {
+            arr = Object.values(item);
+        } else {
             return item;
         }
 
@@ -187,6 +184,13 @@ export default (props) => {
         return arr;
     }
 
+    const deleteRow = (index) => {
+        var array = [...toppings]; // make a separate copy of the array
+        if (index !== -1) {
+            array.splice(index, 1);
+           setToppings( array );
+        }
+    }
 
 
 
@@ -199,29 +203,30 @@ export default (props) => {
             <h3>{props.name}</h3>
             <p>checklist ID : {props.id}</p>
             <ul className={styles.toppingsList}>
-               
+
                 {
                     toppings.map(({ name, price, isChecked }, index) => {
-                    return (
-                        <li key={index}>
-                            <div className={styles.toppingsListItem}>
-                                <div className="left-section">
-                                    <input
-                                        type="checkbox"
-                                        id={`custom-checkbox-${index}`}
-                                        name={name}
-                                        value={name}
-                                        checked={isChecked}
-                                        onChange={() => handleOnChange(index)}
-                                    />
-                                    <label htmlFor={`custom-checkbox-${index}`}>
-                                        <input type="text" name="name" value={name} onChange={(e) => handleOnChangeToppingsListItem(e, index)} /></label>
+                        return (
+                            <li key={index}>
+                                <div className={styles.toppingsListItem}>
+                                    <div className="left-section">
+                                        <input
+                                            type="checkbox"
+                                            id={`custom-checkbox-${index}`}
+                                            name={name}
+                                            value={name}
+                                            checked={isChecked}
+                                            onChange={() => handleOnChange(index)}
+                                        />
+                                        <label htmlFor={`custom-checkbox-${index}`}>
+                                            <input type="text" name="name" value={name} onChange={(e) => handleOnChangeToppingsListItem(e, index)} /></label>
+                                    </div>
+                                    <button type="button" className={styles.smallbutton} onClick={() => deleteRow(index)}>Delete</button>
+                                    <div className="right-section">{getFormattedPrice(price)}</div>
                                 </div>
-                                <div className="right-section">{getFormattedPrice(price)}</div>
-                            </div>
-                        </li>
-                    );
-                })}
+                            </li>
+                        );
+                    })}
                 <li>
                     <div className={styles.toppingsListItem}>
                         <div className="left-section">Total:</div>

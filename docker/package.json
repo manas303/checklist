@@ -9,6 +9,7 @@
   "author": "Manas Srivastava",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.963.0"
+    "aws-sdk": "^2.963.0",
+    "cors": "^2.8.5"
   }
 }
