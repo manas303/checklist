@@ -1,0 +1,51 @@
+.navigator{
+    background-color: #072969;
+    border: none;
+    margin: 0%;
+    padding: 1%;
+    width: 81%;
+    display: inline-block;
+
+}
+
+
+
+ul {
+    list-style: none;
+    border: none;
+    margin: 0;
+   
+    
+}
+
+ul li {
+    display: inline;
+    padding-left: 1%;
+    color: ivory;
+    
+}
+
+.bmwdiv{
+    height: inherit;
+    width: 5%;
+    float: left;
+    background-color: #072969;
+    margin-top: 0.4%;
+    margin-left: 0.5%;
+}
+
+.bmwlogo{
+    max-width: 50%;
+    max-height: 50%;
+    margin: 0%;
+    padding-left: 0%;
+    border: 0px;
+}
+
+.navigatorcontainer{
+    width: 100%;
+    padding: 0%;
+    border: 0px;
+    margin: 0%;
+    background-color: #072969;
+}

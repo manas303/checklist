@@ -1,0 +1,69 @@
+.App {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  }
+
+.App h3{
+    margin: 0;
+}
+.topping {
+    margin-top: 0.3rem;
+    vertical-align: text-bottom;
+  }
+  
+.result {
+    margin-top: 1rem;
+  }
+  
+.toppingsList,
+.total {
+    width: 30%;
+    margin: 0 auto;
+  }
+  
+.toppingsList {
+    list-style: none;
+    padding: 0;
+  }
+  
+.toppingsList li {
+    margin-bottom: 0.5rem;
+  }
+  
+.toppingsListItem {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+.toppingsList li:last-child {
+    border-top: 1px solid #ccc;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  
+.toppingsListItem label {
+    vertical-align: text-bottom;
+    margin-left: 0.2rem;
+  }
+  
+.total {
+    margin-top: 1rem;
+  }
+  
+@media screen and (max-width: 600px) {
+    .toppingsList,
+    .total {
+      width: 90%;
+    }
+  }
+
+.Button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+}
