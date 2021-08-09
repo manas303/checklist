@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/checklist/static/css/main.e31a01ec.chunk.css",
+    "main.css": "/checklist/static/css/main.84ceaae4.chunk.css",
     "main.js": "/checklist/static/js/main.2a28546f.chunk.js",
     "main.js.map": "/checklist/static/js/main.2a28546f.chunk.js.map",
     "runtime-main.js": "/checklist/static/js/runtime-main.69161c2f.js",
@@ -10,7 +10,7 @@
     "static/js/3.b6863255.chunk.js": "/checklist/static/js/3.b6863255.chunk.js",
     "static/js/3.b6863255.chunk.js.map": "/checklist/static/js/3.b6863255.chunk.js.map",
     "index.html": "/checklist/index.html",
-    "static/css/main.e31a01ec.chunk.css.map": "/checklist/static/css/main.e31a01ec.chunk.css.map",
+    "static/css/main.84ceaae4.chunk.css.map": "/checklist/static/css/main.84ceaae4.chunk.css.map",
     "static/js/2.449f5616.chunk.js.LICENSE.txt": "/checklist/static/js/2.449f5616.chunk.js.LICENSE.txt",
     "static/media/bmw.a590455f.png": "/checklist/static/media/bmw.a590455f.png",
     "static/media/logo.6ce24c58.svg": "/checklist/static/media/logo.6ce24c58.svg"
@@ -18,7 +18,7 @@
   "entrypoints": [
     "static/js/runtime-main.69161c2f.js",
     "static/js/2.449f5616.chunk.js",
-    "static/css/main.e31a01ec.chunk.css",
+    "static/css/main.84ceaae4.chunk.css",
     "static/js/main.2a28546f.chunk.js"
   ]
 }
