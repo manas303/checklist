@@ -212,6 +212,7 @@ export default (props) => {
 
     return (
         <div className={styles.App}>
+            <br/>
             <h3>{props.name}</h3>
             <ul className={styles.toppingsList}>
 
