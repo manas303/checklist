@@ -148,10 +148,14 @@ export default (props) => {
         return result;
     }
 
-    const isnotnull = (data)=>{
+    const isnull = (data)=>{
         if((typeof(data) == 'undefined') && (data == null)){
            return true;
         }
+        if((typeof(data.name) == 'undefined') || (data.name == null) || (data.name == "")){
+            return true;
+        }
+
     }
 
     const save = () => {
@@ -160,7 +164,7 @@ export default (props) => {
         var flattenedPayload = flatten(updatedToppings);
         console.log('posting request', JSON.stringify(flattenedPayload));
         var arr = makeArray(flattenedPayload);
-        if(arr.every(isnotnull)){
+        if(arr.some(isnull) && arr.length > 0){
             alert("Please fix empty fields");
             return;
         }

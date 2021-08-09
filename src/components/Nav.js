@@ -8,7 +8,7 @@ const Nav = () => {
         <img className= {styles.bmwlogo} src={bmwlogo} alt="some logo"/>
     </div>
     <div className={styles.navigator}>
-        <nav><ul><li>Home</li><li>Checklist</li></ul></nav>
+        <nav><ul><li>Checklist</li></ul></nav>
     </div>
     </div>
 }
