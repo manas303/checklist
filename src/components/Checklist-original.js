@@ -106,9 +106,9 @@ export default (props) => {
     const addItem = () => {
         const updatedToppings = Object.create(toppings);
         updatedToppings.push({
-            name: "",
-            price: 0,
-            isChecked: false
+            "name": "",
+            "price": 0,
+            "isChecked": false
         });
         // const updatedCheckedState = Object.create(checkedState);
         // updatedCheckedState.push(false);
@@ -148,13 +148,23 @@ export default (props) => {
         return result;
     }
 
+    const isnotnull = (data)=>{
+        if((typeof(data) == 'undefined') && (data == null)){
+           return true;
+        }
+    }
+
     const save = () => {
         const updatedToppings = Object.assign(toppings);
         console.log('updated value' + updatedToppings);
-        
         var flattenedPayload = flatten(updatedToppings);
         console.log('posting request', JSON.stringify(flattenedPayload));
         var arr = makeArray(flattenedPayload);
+        if(arr.every(isnotnull)){
+            alert("Please fix empty fields");
+            return;
+        }
+        
         console.log('posting request', JSON.stringify(arr));
         var request = {
             "id": props.id,
@@ -169,6 +179,7 @@ export default (props) => {
                 }
             }
         ).then(data => { console.log("response" + JSON.stringify(data.json())) });
+        alert("Saved!")
 
     }
 
@@ -176,6 +187,7 @@ export default (props) => {
         var arr;
         if (Array.isArray(item) == false) {
             arr = Object.values(item);
+            arr.splice(-1);
         } else {
             return item;
         }
@@ -222,7 +234,7 @@ export default (props) => {
                                             <input type="text" name="name" value={name} onChange={(e) => handleOnChangeToppingsListItem(e, index)} /></label>
                                     </div>
                                     <button type="button" className={styles.smallbutton} onClick={() => deleteRow(index)}>Delete</button>
-                                    <div className="right-section">{getFormattedPrice(price)}</div>
+                                    <div className="right-section">{price}</div>
                                 </div>
                             </li>
                         );
