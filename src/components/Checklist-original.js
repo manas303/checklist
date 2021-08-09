@@ -213,7 +213,6 @@ export default (props) => {
     return (
         <div className={styles.App}>
             <h3>{props.name}</h3>
-            <p>checklist ID : {props.id}</p>
             <ul className={styles.toppingsList}>
 
                 {
