@@ -7,7 +7,7 @@ import ChecklistOriginal from './Checklist-original';
 import { useState } from 'react';
 import uuid from 'react-uuid'
 
-export default function SimpleContainer() {
+export default function SimpleContainer(props) {
 
   const [ids, setIds] = useState([uuid(), uuid(), uuid()])
 
@@ -17,11 +17,11 @@ export default function SimpleContainer() {
       <Container maxWidth="md">
         <Typography component="div" style={{ backgroundColor: '#3163c7', height: '180vh' }} >
             
-            <ChecklistOriginal name="Coles" id="1" />
+            <ChecklistOriginal name="Coles" id="1" email={props.email} />
             <br/>
-            <ChecklistOriginal name="Indian Store " id="2"/>
+            <ChecklistOriginal name="Indian Store " id="2" email={props.email}/>
             <br/>
-            <ChecklistOriginal name="Big Daddy's" id="3"/>
+            <ChecklistOriginal name="Big Daddy's" id="3" email={props.email}/>
             </Typography>
       </Container>
     </React.Fragment>

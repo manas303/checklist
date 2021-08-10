@@ -19,12 +19,13 @@ exports.handler = async (event, context, call) => {
     var payload = {
         "method": bdy.method,
         "id": bdy.id,
-        "toppings": bdy.toppings
+        "toppings": bdy.toppings,
+        "username": bdy.email
     }
 
     var params = {
         Bucket: 'manassrivastava-old',
-        Key: bdy.id + '.json',
+        Key: bdy.email + "/" + bdy.id + '.json',
         Body: JSON.stringify(payload),
         ContentType: 'application/json',
     };

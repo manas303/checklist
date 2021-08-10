@@ -17,7 +17,7 @@ export default (props) => {
                 console.log("response received", JSON.stringify(items));
 
                 setToppings((toppingsOld) => {
-                    return items.toppings.length > 0 ? items.toppings : toppingsOld
+                    return (items.toppings != null && items.toppings.length > 0) ? items.toppings : toppingsOld
                 });
             }
             )
@@ -28,7 +28,8 @@ export default (props) => {
 
         var payload = {
             "id": props.id,
-            "method": "get"
+            "method": "get",
+            "email": props.email
         };
         console.log('posting request', JSON.stringify(payload));
         const response = fetch('https://gaha9omme7.execute-api.ap-southeast-2.amazonaws.com/default/checklist-api',
@@ -169,11 +170,13 @@ export default (props) => {
             return;
         }
         
-        console.log('posting request', JSON.stringify(arr));
+       
         var request = {
             "id": props.id,
-            "toppings": arr
+            "toppings": arr,
+            "email": props.email
         }
+        console.log('posting request', JSON.stringify(request));
         const response = fetch('https://gaha9omme7.execute-api.ap-southeast-2.amazonaws.com/default/checklist-api',
             {
                 method: 'POST',
