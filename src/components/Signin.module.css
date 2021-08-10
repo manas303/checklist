@@ -27,6 +27,7 @@
 
   .checklist{
     width: 26%;
+    left: 37%;
     border: none;
     position: absolute;
     z-index: 10;
