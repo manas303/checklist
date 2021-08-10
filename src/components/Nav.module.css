@@ -1,45 +1,96 @@
-.navigator{
+.navigatorleft{
     background-color: #072969;
+    text-align: right;
     border: none;
     margin: 0%;
     padding: 1%;
-    width: 81%;
-    display: inline-block;
+    width: 30.5%;
+    display: inline;
+    
 
 }
 
+.navigatorright{
+    background-color: #072969;
+    text-align: right;
+    border: none;
+    margin: 0%;
+    padding-left: 1%;
+    width: 40%;
+    display: inline;
+    
 
+}
 
-ul {
+.navigatorimg{
+    background-color: #072969;
+    text-align: right;
+    border: none;
+    margin: 0%;
+    padding-bottom: 1%;
+    width: 30%;
+    display: inline;
+    
+
+}
+
+.navigatorcontainer nav .navigatorimg{
+    width: 5%;
+    margin: 0%;
+    padding: 0.5%;
+}
+
+.navigatorcontainer nav{
+    margin: 0%;
+    padding: 0.5%;
+}
+
+.Button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 12px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+  }
+
+.navigatorcontainer ul {
     list-style: none;
     border: none;
-    margin: 0;
-   
-    
+    display: inline;
 }
 
-ul li {
-    display: inline;
+.navigatorcontainer ul li {
+    display: inline-block;
     padding-left: 1%;
     color: ivory;
-    
+    list-style: none;
+}
+
+.navigatorimg{
+    display: inline-block;
+}
+
+.navigatorimg img{
+    width: 6%;
+    border: none;
+    position: absolute;
+    z-index: 10;
 }
 
 .bmwdiv{
     height: inherit;
-    width: 5%;
-    float: left;
-    background-color: #072969;
-    margin-top: 0.4%;
-    margin-left: 0.5%;
+    width: 1%;
+    padding-left: 1%;
 }
 
 .bmwlogo{
-    max-width: 50%;
-    max-height: 50%;
-    margin: 0%;
-    padding-left: 0%;
-    border: 0px;
+    width: 2.7%;
+    border: none;
+    z-index: 10;
+    position: absolute;
 }
 
 .navigatorcontainer{
