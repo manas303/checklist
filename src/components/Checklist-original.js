@@ -32,7 +32,7 @@ export default (props) => {
             "email": props.email
         };
         console.log('posting request', JSON.stringify(payload));
-        const response = fetch('https://gaha9omme7.execute-api.ap-southeast-2.amazonaws.com/default/checklist-api',
+        const response = fetch(process.env.REACT_APP_API_URL,
             {
                 method: 'POST',
                 body: JSON.stringify(payload),
@@ -161,7 +161,7 @@ export default (props) => {
 
     const save = () => {
         const updatedToppings = Object.assign(toppings);
-        console.log('updated value' + updatedToppings);
+        console.log('updated value' +  JSON.stringify(updatedToppings));
         var flattenedPayload = flatten(updatedToppings);
         console.log('posting request', JSON.stringify(flattenedPayload));
         var arr = makeArray(flattenedPayload);
@@ -194,7 +194,7 @@ export default (props) => {
         var arr;
         if (Array.isArray(item) == false) {
             arr = Object.values(item);
-            arr.splice(-1);
+           // arr.splice(-1);
         } else {
             return item;
         }

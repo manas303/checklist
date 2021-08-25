@@ -36,7 +36,7 @@ export default (props)=>{
           
           
           <Modal
-            isOpen="true"
+            isOpen={true}
             contentLabel="Example Modal"
             style={customStyles}>   
              <div className={styles.insidemodal}> 
