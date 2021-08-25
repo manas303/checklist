@@ -177,7 +177,7 @@ export default (props) => {
             "email": props.email
         }
         console.log('posting request', JSON.stringify(request));
-        const response = fetch('https://gaha9omme7.execute-api.ap-southeast-2.amazonaws.com/default/checklist-api',
+        const response = fetch(process.env.REACT_APP_API_URL,
             {
                 method: 'POST',
                 body: JSON.stringify(request),
