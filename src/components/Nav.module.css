@@ -80,6 +80,24 @@
     z-index: 10;
 }
 
+@media only screen and (max-width: 1000px) {
+
+    .navigatorimg {
+        margin: 5%;
+        display: block;
+        z-index: 5;
+    }
+
+    .navigatorimg img{
+        width: 12%;
+        margin-left: 8%;
+        border: none;
+        position: absolute;
+        z-index: 10;
+    }
+
+}
+
 .bmwdiv{
     height: inherit;
     width: 1%;
