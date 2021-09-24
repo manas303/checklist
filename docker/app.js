@@ -20,7 +20,8 @@ exports.handler = async (event, context, call) => {
         "method": bdy.method,
         "id": bdy.id,
         "toppings": bdy.toppings,
-        "username": bdy.email
+        "username": bdy.email,
+        "total": bdy.total
     }
 
     var params = {
