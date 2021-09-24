@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './Checklist-original.module.css';
 
-const getFormattedPrice = (price) => `$${price.toFixed(2)}`;
+const getFormattedPrice = (price) => `$${price}`;
 
 export default (props) => {
     const [toppings, setToppings] = useState(
@@ -19,6 +19,7 @@ export default (props) => {
                 setToppings((toppingsOld) => {
                     return (items.toppings != null && items.toppings.length > 0) ? items.toppings : toppingsOld
                 });
+                setTotal(items.total);
             }
             )
         //return false;
@@ -92,15 +93,37 @@ export default (props) => {
             console.log(index);
 
             console.log("splicing ");
-            newToppings.splice(index, 1, {
-                name: e.target.value,
-                "price": 0,
-                "isChecked": false
-            })
+            if(e.target.name == 'price'){
+                newToppings.splice(index, 1, {
+                    "price": e.target.value,
+                    "name": toppings[index].name,
+                    "isChecked": false
+                })
+            }
+            if(e.target.name == 'name'){
+                newToppings.splice(index, 1, {
+                    name: e.target.value,
+                    "price": toppings[index].price,
+                    "isChecked": false
+                })
+            }
+            const totalPrice = newToppings.reduce(
+                (sum, item, index) => {
+                        console.log("sum ", sum);
+                        console.log("returning sum ", parseFloat(sum) + parseFloat(item.price));
+                        return parseFloat(sum) + parseFloat(item.price);
+                },
+                0
+            );
+    
+            setTotal(totalPrice);
+
             console.log("newToppings - > ", newToppings);
             return newToppings;
         });
         console.log("toppings -> ", toppings)
+        //const newToppings = [...toppings];
+        
 
     };
 
@@ -174,7 +197,8 @@ export default (props) => {
         var request = {
             "id": props.id,
             "toppings": arr,
-            "email": props.email
+            "email": props.email,
+            "total": total
         }
         console.log('posting request', JSON.stringify(request));
         const response = fetch(process.env.REACT_APP_API_URL,
@@ -221,6 +245,7 @@ export default (props) => {
         <div className={styles.App}>
             <br/>
             <h3>{props.name}</h3>
+            <br/>
             <ul className={styles.toppingsList}>
 
                 {
@@ -228,7 +253,7 @@ export default (props) => {
                         return (
                             <li key={index}>
                                 <div className={styles.toppingsListItem}>
-                                    <div className="left-section">
+                                    <div className="leftsection">
                                         <input
                                             type="checkbox"
                                             id={`custom-checkbox-${index}`}
@@ -238,10 +263,18 @@ export default (props) => {
                                             onChange={() => handleOnChange(index)}
                                         />
                                         <label htmlFor={`custom-checkbox-${index}`}>
-                                            <input type="text" name="name" value={name} onChange={(e) => handleOnChangeToppingsListItem(e, index)} /></label>
+                                            <input type="text" name="name"  value={name} onChange={(e) => handleOnChangeToppingsListItem(e, index)} />
+                                           </label>
+                                        
+                                            
                                     </div>
                                     <button type="button" className={styles.smallbutton} onClick={() => deleteRow(index)}>Delete</button>
-                                    <div className="right-section">{price}</div>
+                                    
+                                    <div className="rightsection">
+                                    <input type="text" className={styles.textamt} name="price" value={price} onChange={(e) => handleOnChangeToppingsListItem(e, index)} />
+                                    </div>
+                                  
+                                    
                                 </div>
                             </li>
                         );

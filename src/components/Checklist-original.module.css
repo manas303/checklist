@@ -18,7 +18,7 @@
   
 .toppingsList,
 .total {
-    width: 30%;
+    width: 60%;
     margin: 0 auto;
     color: ivory;
   }
@@ -28,13 +28,22 @@
     padding: 0;
   }
   
+  .textamt {
+    width: 40%;
+  }
+
+  label input[type="text"] {
+    width: 80%;
+}
+
+  
 .toppingsList li {
     margin-bottom: 0.5rem;
   }
   
 .toppingsListItem {
     display: flex;
-    justify-content: space-between;
+    justify-content:space-around;
   }
   
 .toppingsList li:last-child {
