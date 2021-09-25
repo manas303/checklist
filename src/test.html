@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <style>
+            .container{
+                display: flex;
+                
+            }
+
+            .spacer{
+                min-width: 4%;
+            }
+
+            .firstitem, .seconditem, .thirditem{
+                
+            }
+            .price{
+                width: 10%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="firstitem">
+                <input
+                                            type="checkbox"
+                                            name="ckbox"
+                                            id="ckbox"
+                                           
+                                        />
+                                        <label for="ckbox">
+                                            <input type="text" name="name"  />
+                                           </label>    
+            </div>
+            <div class="spacer"></div>
+            <div class="seconditem">
+                <button type="button">Delete</button>
+            </div>
+            <div class="spacer"></div>
+            <div class="thirditem" id="thirditem">
+                <input type="text" class="price" id="price" name="price"/>
+            </div>
+        </div>
+
+    </body>
+</html>

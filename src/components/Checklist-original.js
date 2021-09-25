@@ -74,11 +74,8 @@ export default (props) => {
         );
         */
         const totalPrice = updatedToppings.reduce(
-            (sum, item, index) => {
-                if (item.isChecked === true) {
-                    return sum + item.price;
-                }
-                return sum;
+            (sum, item, index) => {    
+            return parseFloat(sum) + parseFloat(item.price);
             },
             0
         );
@@ -107,14 +104,7 @@ export default (props) => {
                     "isChecked": false
                 })
             }
-            const totalPrice = newToppings.reduce(
-                (sum, item, index) => {
-                        console.log("sum ", sum);
-                        console.log("returning sum ", parseFloat(sum) + parseFloat(item.price));
-                        return parseFloat(sum) + parseFloat(item.price);
-                },
-                0
-            );
+            const totalPrice = calculateTotal(newToppings);
     
             setTotal(totalPrice);
 
@@ -184,6 +174,9 @@ export default (props) => {
 
     const save = () => {
         const updatedToppings = Object.assign(toppings);
+        const totalPrice = calculateTotal(updatedToppings);
+
+        setTotal(totalPrice);
         console.log('updated value' +  JSON.stringify(updatedToppings));
         var flattenedPayload = flatten(updatedToppings);
         console.log('posting request', JSON.stringify(flattenedPayload));
@@ -198,7 +191,7 @@ export default (props) => {
             "id": props.id,
             "toppings": arr,
             "email": props.email,
-            "total": total
+            "total": totalPrice
         }
         console.log('posting request', JSON.stringify(request));
         const response = fetch(process.env.REACT_APP_API_URL,
@@ -233,12 +226,25 @@ export default (props) => {
             array.splice(index, 1);
            setToppings( array );
         }
+        const totalPrice = calculateTotal(array);
+        setTotal(totalPrice);
+
     }
 
-
-
-
-
+    const calculateTotal = (array)=>{
+        return array.reduce(
+            (sum, item, index) => {
+                    console.log("sum ", sum);
+                    if(isNaN(parseFloat(item.price))){
+                        console.log("returning sum ", parseFloat(sum));
+                        return parseFloat(sum);
+                    }
+                    console.log("returning sum ", parseFloat(sum) + parseFloat(item.price));
+                    return parseFloat(sum) + parseFloat(item.price);
+            },
+            0
+        );
+    }
 
 
     return (
@@ -254,7 +260,7 @@ export default (props) => {
                             <li key={index}>
                                 <div className={styles.toppingsListItem}>
                                     <div className="leftsection">
-                                        <input
+                                    <input
                                             type="checkbox"
                                             id={`custom-checkbox-${index}`}
                                             name={name}
@@ -264,14 +270,16 @@ export default (props) => {
                                         />
                                         <label htmlFor={`custom-checkbox-${index}`}>
                                             <input type="text" name="name"  value={name} onChange={(e) => handleOnChangeToppingsListItem(e, index)} />
-                                           </label>
-                                        
-                                            
+                                           </label>    
+                                          
+                                           
                                     </div>
-                                    <button type="button" className={styles.smallbutton} onClick={() => deleteRow(index)}>Delete</button>
                                     
-                                    <div className="rightsection">
-                                    <input type="text" className={styles.textamt} name="price" value={price} onChange={(e) => handleOnChangeToppingsListItem(e, index)} />
+                                    <div className={styles.spacer}/>
+                                    <button type="button" className={styles.smallbutton} onClick={() => deleteRow(index)}>Delete</button>
+                                    <div className={styles.spacer}/>
+                                    <div className={styles.rightsection}>    
+                                        <input type="text" className={styles.textamt} name="price" value={price} onChange={(e) => handleOnChangeToppingsListItem(e, index)} />
                                     </div>
                                   
                                     
@@ -282,7 +290,11 @@ export default (props) => {
                 <li>
                     <div className={styles.toppingsListItem}>
                         <div className="left-section">Total:</div>
-                        <div className="right-section">{getFormattedPrice(total)}</div>
+                         { total!= undefined && !isNaN(total)?
+                            <div className="right-section">{(getFormattedPrice(total)===undefined ||getFormattedPrice(total)===NaN) ? '':getFormattedPrice(total)}</div>
+                            :"$0"
+                        }
+                        
                     </div>
                 </li>
             </ul>
