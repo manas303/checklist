@@ -92,6 +92,10 @@
   font-size: 12px;
 }
 
+.Button:hover {
+  background-color: rgb(216, 87, 12);
+}
+
 .smallbutton {
     background-color: #4CAF50; /* Green */
     border: none;
@@ -101,4 +105,8 @@
     text-decoration: none;
     display: inline-block;
     font-size: 8px;
+  }
+
+  .smallbutton:hover{
+    background-color: rgb(216, 87, 12);
   }
