@@ -84,24 +84,6 @@
     z-index: 10;
 }
 
-@media only screen and (max-width: 1000px) {
-
-    .navigatorimg {
-        margin: 5%;
-        display: block;
-        z-index: 5;
-    }
-
-    .navigatorimg img{
-        width: 12%;
-        margin-left: 8%;
-        border: none;
-        position: absolute;
-        z-index: 10;
-    }
-
-}
-
 .bmwdiv{
     height: inherit;
     width: 1%;
@@ -114,6 +96,39 @@
     z-index: 10;
     position: absolute;
 }
+
+
+@media only screen and (max-width: 1000px) {
+
+    .navigatorimg {
+        margin: 5%;
+        display: block;
+        z-index: 5;
+    }
+
+    .navigatorimg img{
+        width: 12%;
+        margin-left: 6%;
+        border: none;
+        position: absolute;
+        z-index: 10;
+        margin-top: 4%;
+        
+    }
+    .bmwlogo{
+        margin: 1.5%;
+        width: 8%;
+        border: none;
+        z-index: 10;
+        position: absolute;
+    }
+
+    .Button{
+        margin-top: 4%;
+    }
+
+}
+
 
 .navigatorcontainer{
     width: 100%;

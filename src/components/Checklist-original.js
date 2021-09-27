@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './Checklist-original.module.css';
 
-const getFormattedPrice = (price) => `$${price}`;
+const getFormattedPrice = (price) =>`$${price}`;
 
 export default (props) => {
     const [toppings, setToppings] = useState(
@@ -14,7 +14,7 @@ export default (props) => {
         getData()
             .then(items => {
 
-                console.log("response received", JSON.stringify(items));
+                console.log("useEffect response received", JSON.stringify(items));
 
                 setToppings((toppingsOld) => {
                     return (items.toppings != null && items.toppings.length > 0) ? items.toppings : toppingsOld
@@ -250,7 +250,19 @@ export default (props) => {
     return (
         <div className={styles.App}>
             <br/>
-            <h3>{props.name}</h3>
+            {props.changing?
+            <div><input type="text" className={styles.inputtext} name={`${props.name} + changing`} 
+                        value={props.name} onChange={(e)=>props.changeName(props.id, e)}></input>
+                        &nbsp;&nbsp;&nbsp;
+                        <i className="fa fa-check-square-o" onClick={() => props.changeNameIndicator(props.id,!props.changing)}></i>
+                       
+                  </div> 
+            :
+            <h3>{props.name} &nbsp;
+            <i className="fa fa-pencil" aria-hidden="true" onClick={()=> props.changeNameIndicator(props.id,!props.changing)}></i>
+            &nbsp;&nbsp;
+                        <i className="fa fa-times" onClick={(e) => {if(window.confirm('Are you sure to delete this checklist?')){ props.markDeleted(props.id, e)}}} aria-hidden="true"></i></h3>}
+             
             <br/>
             <ul className={styles.toppingsList}>
 
@@ -289,10 +301,10 @@ export default (props) => {
                     })}
                 <li>
                     <div className={styles.toppingsListItem}>
-                        <div className="left-section">Total:</div>
+                        <div className="left-section">Total : &nbsp;</div>
                          { total!= undefined && !isNaN(total)?
                             <div className="right-section">{(getFormattedPrice(total)===undefined ||getFormattedPrice(total)===NaN) ? '':getFormattedPrice(total)}</div>
-                            :"$0"
+                            :" $0"
                         }
                         
                     </div>

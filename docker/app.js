@@ -33,7 +33,25 @@ exports.handler = async (event, context, call) => {
     
     if (bdy.method === "get") {
         return await fetchFromS3(params, bdy);
-    } else {
+    } 
+    else if(bdy.method==="saveChecklists"){
+        params = {
+            Bucket: 'manassrivastava-old',
+            Key: bdy.email + "/" + "checklistIds" + '.json',
+            Body: JSON.stringify(bdy.ids),
+            ContentType: 'application/json',
+        };
+        return await uploadToS3(params, bdy);
+    }
+    else if(bdy.method ==="fetchChecklists"){
+        params = {
+            Bucket: 'manassrivastava-old',
+            Key: bdy.email + "/" + "checklistIds" + '.json',
+            ContentType: 'application/json',
+        };
+        return await fetchFromS3(params, bdy);
+    }
+    else {
         return await uploadToS3(params, bdy);
     }
 
@@ -58,7 +76,7 @@ const uploadToS3 = async (params, bdy) => {
                 "path": bdy.path,
                 "s3Path": s3Response.Location
             })
-        }
+        };
 
         return res;
 

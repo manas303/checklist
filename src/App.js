@@ -55,7 +55,7 @@ class App extends React.Component {
                 displayName={this.state.currentUser.displayName}
                 email={this.state.currentUser.email}
                 logout={() => auth.signOut()} />
-              <SimpleContainer email={this.state.currentUser.email}/>
+              <SimpleContainer key={this.state.currentUser.email} email={this.state.currentUser.email}/>
             </div>
 
             ) :
