@@ -94,14 +94,14 @@ export default (props) => {
                 newToppings.splice(index, 1, {
                     "price": e.target.value,
                     "name": toppings[index].name,
-                    "isChecked": false
+                    "isChecked": toppings[index].isChecked
                 })
             }
             if(e.target.name == 'name'){
                 newToppings.splice(index, 1, {
                     name: e.target.value,
                     "price": toppings[index].price,
-                    "isChecked": false
+                    "isChecked": toppings[index].isChecked
                 })
             }
             const totalPrice = calculateTotal(newToppings);
