@@ -31,14 +31,14 @@ export default (props) => {
                 // Dynamically create a canvas element
                 let canvas = document.createElement("canvas");
     
-                canvas.width=size;
+                canvas.width=size * 1.3;
                 canvas.height=size;
     
                 // let canvas = document.getElementById("canvas");
                 let ctx = canvas.getContext("2d");
     
                 // Actual resizing
-                ctx.drawImage(img, 0, 0, size, size);
+                ctx.drawImage(img, 0, 0, size * 1.3, size);
     
                 // Show resized image in preview element
                 let dataurl = canvas.toDataURL(imageFile.type);

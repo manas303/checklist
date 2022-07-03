@@ -49,8 +49,3 @@
   .uploadFile{
     display: inline-block;
   }
-
-  .uploadContainer{
-    display: flex;
-    justify-content: center;
-  }

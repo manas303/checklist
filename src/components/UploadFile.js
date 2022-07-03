@@ -39,7 +39,7 @@ export default (props) => {
         <div>
           <br/>
       {props.photo == undefined ? null : <div><img src={photoURL} width={"100%"}/></div>}
-      <div className={styles.uploadContainer}><input type="file" name="photo" onChange = {(e)=>changeHandler(close, e, props.handleOnChangeToppingsListItem, props.i)} />
+      <div><input type="file" name="photo" onChange = {(e)=>changeHandler(close, e, props.handleOnChangeToppingsListItem, props.i)} />
       </div>
 			<br/><br/>
 		</div>
