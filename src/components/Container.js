@@ -53,6 +53,7 @@ export default function SimpleContainer(props) {
       })
     
     console.log("markedIds", JSON.stringify(markedIds));
+    setIds(markedIds);
     saveUpdatedChecklists(markedIds);
 
   };
@@ -149,6 +150,7 @@ export default function SimpleContainer(props) {
       var updatedIds = [...ids, {id : ids.length  + 1, name : addingChecklist.checklistName, changing : false}];
       setAddingChecklist({adding:false, checklistName:""});
       saveUpdatedChecklists(updatedIds);
+      setIds(updatedIds);
 
   }
 
