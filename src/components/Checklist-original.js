@@ -19,6 +19,43 @@ export default (props) => {
         return new File([blob], "File name",{ type: "image/png" });
     }
 
+    const resizeImage = (imageFile, size = 400) => {
+    
+        let resolver = ()=>{};
+    
+        let reader = new FileReader();
+    
+        reader.onload = function (e) {
+            let img = document.createElement("img");
+            img.onload = function (event) {
+                // Dynamically create a canvas element
+                let canvas = document.createElement("canvas");
+    
+                canvas.width=size;
+                canvas.height=size;
+    
+                // let canvas = document.getElementById("canvas");
+                let ctx = canvas.getContext("2d");
+    
+                // Actual resizing
+                ctx.drawImage(img, 0, 0, size, size);
+    
+                // Show resized image in preview element
+                let dataurl = canvas.toDataURL(imageFile.type);
+    
+                resolver(dataurl);
+            }
+            img.src = e.target.result;
+        }
+    
+        reader.readAsDataURL(imageFile);
+    
+        
+        return new Promise((resolve, reject) => {
+            resolver = resolve;
+        })
+    };
+
     useEffect(() => {
         let mounted = true;
         getData()
@@ -261,7 +298,7 @@ export default (props) => {
                     result[key] = await convertToBase64AndFlatten(result[key], result);
                 }else{
                     console.log(key + " value is instance of file" )
-                    result[key] = await encodeImageFileAsURL(result[key]);
+                    result[key] = await resizeImage(result[key]);
                     console.log('key[value] is ' + result[key] );
                 }
                 
@@ -273,11 +310,11 @@ export default (props) => {
         return result;
     }
 
-    async function encodeImageFileAsURL(element, obj) {
+    async function encodeImageFileAsURL(element) {
         return new Promise((resolve, reject) => {
         var file = element;
         var reader = new FileReader();
-        reader.onloadend = function() {
+        reader.onloadend = function() { 
           console.log('RESULT', reader.result)
           element =  reader.result;
           resolve(element);
