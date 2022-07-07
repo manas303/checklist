@@ -19,9 +19,22 @@ export default (props) => {
         return new File([blob], "File name",{ type: "image/png" });
     }
 
+    const resize= function (size){
+        console.log("size of the image is " + size);
+        if (size/1024 > 1024){
+            console.log("size of the returned image is " + size/100);
+            return 400;
+        }
+        
+        return 400;
+    }
+
     const resizeImage = (imageFile, size = 400) => {
     
         let resolver = ()=>{};
+        console.log("natural height " + imageFile.height);
+        size = resize(imageFile.size);
+        console.log("working with size" + size);
     
         let reader = new FileReader();
     

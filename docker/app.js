@@ -2,13 +2,20 @@ var AWS = require('aws-sdk');
 
 exports.handler = async (event, context, call) => {
     console.log("Incoming request " + JSON.stringify(event));
+    //console.log("Incoming request " + JSON.stringify(event));
     var bdy = JSON.parse(event.body);
+    var origin = null;
+    var allowedHeaders = ["https://manassrivastava.com","http://localhost:3002","https://manas303.github.io/checklist",
+                        "http://localhost:3000", "http://localhost:3001"]
+    if(allowedHeaders.some(substring=> event.headers.origin.includes(substring))){
+        origin = event.headers.origin
+    }
     if(bdy== null){
         const response = {
             statusCode: 200,
             headers: {
                 "Access-Control-Allow-Headers" : "Content-Type",
-                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Origin": origin,
                 "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
             },
             body: JSON.stringify('Hello from Lambda!'),
@@ -29,6 +36,7 @@ exports.handler = async (event, context, call) => {
         Key: bdy.email + "/" + bdy.id + '.json',
         Body: JSON.stringify(payload),
         ContentType: 'application/json',
+        originHeader : origin
     };
     
     if (bdy.method === "get") {
@@ -40,6 +48,7 @@ exports.handler = async (event, context, call) => {
             Key: bdy.email + "/" + "checklistIds" + '.json',
             Body: JSON.stringify(bdy.ids),
             ContentType: 'application/json',
+            originHeader : origin
         };
         return await uploadToS3(params, bdy);
     }
@@ -48,6 +57,7 @@ exports.handler = async (event, context, call) => {
             Bucket: 'manassrivastava-old',
             Key: bdy.email + "/" + "checklistIds" + '.json',
             ContentType: 'application/json',
+            originHeader : origin
         };
         return await fetchFromS3(params, bdy);
     }
@@ -66,7 +76,7 @@ const uploadToS3 = async (params, bdy) => {
             'statusCode': 200,
             'headers': {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': params.originHeader,
                 'Access-Control-Allow-Methods':'POST, PUT, DELETE, GET, OPTIONS',
                 'Access-Control-Request-Method': '*',
                 'Access-Control-Allow-Headers':'Origin, X-Requested-With, Content-Type, Accept, Authorization'
@@ -86,7 +96,7 @@ const uploadToS3 = async (params, bdy) => {
             'statusCode': 200,
             'headers': {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': params.originHeader,
                 'Access-Control-Allow-Methods':'POST, PUT, DELETE, GET, OPTIONS',
                 'Access-Control-Request-Method': '*',
                 'Access-Control-Allow-Headers':'Origin, X-Requested-With, Content-Type, Accept, Authorization'
@@ -110,7 +120,7 @@ const fetchFromS3 = async (params, bdy) => {
             'statusCode': 200,
             'headers': {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': params.originHeader,
                 'Access-Control-Allow-Methods':'POST, PUT, DELETE, GET, OPTIONS',
                 'Access-Control-Request-Method': '*',
                 'Access-Control-Allow-Headers':'Origin, X-Requested-With, Content-Type, Accept, Authorization'
@@ -126,7 +136,7 @@ const fetchFromS3 = async (params, bdy) => {
             'statusCode': 200,
             'headers': {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': params.originHeader,
                 'Access-Control-Allow-Methods':'POST, PUT, DELETE, GET, OPTIONS',
                 'Access-Control-Request-Method': '*',
                 'Access-Control-Allow-Headers':'Origin, X-Requested-With, Content-Type, Accept, Authorization'

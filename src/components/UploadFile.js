@@ -28,7 +28,7 @@ export default (props) => {
     photoURL = window.URL.createObjectURL(new Blob(binaryData, {type: "image/png"}))
   }
   return (
-  <Popup trigger={ props.photo == undefined?<i class="fa fa-upload" aria-hidden="true"></i> :<div><img src={photoURL} width={"17px"}/></div>   } modal nested>
+  <Popup trigger={ props.photo == undefined?<i className="fa fa-upload" aria-hidden="true"></i> :<div><img src={photoURL} width={"17px"}/></div>   } modal nested>
     {close => (
       <div className={styles.modal}>
         <button className={[styles.close]} onClick={close}>
