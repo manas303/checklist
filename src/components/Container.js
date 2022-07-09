@@ -164,7 +164,15 @@ export default function SimpleContainer(props) {
         {ids != null && ids.map(({ id, name, changing, deleted}, index) => { 
           return deleted==null || deleted === false? (
           <div key={id}>
-          <ChecklistOriginal key={id} name={name} id={id} changing={changing} email={props.email} changeName={changeName} changeNameIndicator={changeNameIndicator} markDeleted={markDeleted}/>
+          <ChecklistOriginal key={id} 
+                             name={name} 
+                             id={id} 
+                             changing={changing} 
+                             email={props.email} 
+                             changeName={changeName} 
+                             changeNameIndicator={changeNameIndicator} 
+                             markDeleted={markDeleted}
+                             s3={props.s3}/>
           <br/>
           </div>
         ):

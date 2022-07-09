@@ -19,10 +19,6 @@ export default (props) => {
         return new File([blob], "File name",{ type: "image/png" });
     }
 
-    const blobToFileWithName =  async(blob, filename) => {
-        return new File([blob], filename,{ type: blob.type });
-    }
-
     const resize= function (size){
         console.log("size of the image is " + size);
         if (size/1024 > 1024){
@@ -33,37 +29,10 @@ export default (props) => {
         return 400;
     }
 
-    const uploadToS3 = async imageFile=>{
-        var s3 = props.s3;
-        console.log("imageFile", imageFile)
-        var params = {
-            Bucket: 'manassrivastava-old', // your bucket name,
-            Key: `${props.email}/${props.id}/${imageFile.name}`, // path to the object you're looking for
-            ContentType: imageFile.type,
-            Body: imageFile
-          }
-          const data =  await s3.upload(params).promise();
-          console.log('uploaded at ', data.Key);
-          return data.Key;
-    }
-
-    const fetchFromS3 = async key=>{
-        var s3 = props.s3;
-        console.log("imageFile", key)
-        var params = {
-            Bucket: 'manassrivastava-old', // your bucket name,
-            Key: key
-          }
-     let data = await (s3.getObject(params).promise());
-     let objectData = new Blob([data.Body], {type: data.ContentType}); 
-     console.log("s3 data", objectData);
-     return blobToFileWithName(objectData, key);
-    }
-
-
-    const resizeImage = async (imageFile, size = 400) => {
-        //await uploadToS3(imageFile);
+    const resizeImage = (imageFile, size = 400) => {
+    
         let resolver = ()=>{};
+        console.log("natural height " + imageFile.height);
         size = resize(imageFile.size);
         console.log("working with size" + size);
     
@@ -108,15 +77,17 @@ export default (props) => {
                     if(items.toppings[i].photo != null){
                         console.log(" the item is" + items.toppings[i].name + 
                         " and photo url is  " +  items.toppings[i].photo);
-                    //  items.toppings[i].photo =  await dataURLToBlob(items.toppings[i].photo).then(blob=>blobToFile(blob));
-                      items.toppings[i].photo =  await fetchFromS3(items.toppings[i].photo);
+                      items.toppings[i].photo =  await dataURLToBlob(items.toppings[i].photo).then(blob=>blobToFile(blob));
+                     // items.toppings[i].photo =  await blobToFile(items.toppings[i].photo);
                       console.log('photo changed to ' + items.toppings[i].photo);
                     }
               }  
               return items;
             })
             .then(items => {
-               // console.log("useEffect response received", JSON.stringify(items));
+
+                console.log("useEffect response received", JSON.stringify(items));
+
                 setToppings((toppingsOld) => {
                     return (items.toppings != null && items.toppings.length > 0) ? items.toppings : toppingsOld
                 });
@@ -336,11 +307,11 @@ export default (props) => {
         var result = Object.create(obj);
         for (var key in result) {
             if (typeof result[key] === 'object') {
-                if(!(result[key] instanceof File || result[key] instanceof Blob)){
+                if(!result[key] instanceof File && !result[key] instanceof Blob){
                     result[key] = await convertToBase64AndFlatten(result[key], result);
                 }else{
                     console.log(key + " value is instance of file" )
-                    result[key] = await uploadToS3(result[key]);
+                    result[key] = await resizeImage(result[key]);
                     console.log('key[value] is ' + result[key] );
                 }
                 
@@ -417,7 +388,7 @@ export default (props) => {
                 }
             }
         ).then(data => { console.log("response" + JSON.stringify(data.json())) }).catch(err=> console.log(err));
-        //alert("Saved!")
+        alert("Saved!")
     }
 
     const save = () => {

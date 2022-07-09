@@ -5,7 +5,7 @@ exports.handler = async (event, context, call) => {
     //console.log("Incoming request " + JSON.stringify(event));
     var bdy = JSON.parse(event.body);
     var origin = null;
-    var allowedHeaders = ["https://manassrivastava.com","http://localhost:3002","https://manas303.github.io/checklist",
+    var allowedHeaders = ["https://manassrivastava.com","http://localhost:3002","https://manas303.github.io",
                         "http://localhost:3000", "http://localhost:3001"]
     if(allowedHeaders.some(substring=> event.headers.origin.includes(substring))){
         origin = event.headers.origin

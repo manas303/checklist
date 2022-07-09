@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './Nav.module.css'
 import bmwlogo from './../images/ms_logo2.png'
+import {GoogleLogout} from 'react-google-login';
 
 const Nav = (props) => {
     return <div className={styles.navigatorcontainer} >
@@ -14,7 +15,15 @@ const Nav = (props) => {
         </div>
         <div className={styles.navigatorright}>
             <ul><li>{props.displayName}</li>
-                <li><button type="button" className={styles.Button} onClick={props.logout}>Log out</button></li>
+                <li>{//<button type="button" className={styles.Button} onClick={props.logout}>Log out</button>
+                }
+                <GoogleLogout
+                     className={styles.Button}
+                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                     buttonText="Log out"
+                     onLogoutSuccess={props.onSignoutSuccess}
+                />
+           </li>
             </ul>
         </div>
         <div className={styles.navigatorimg}>

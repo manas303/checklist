@@ -3,20 +3,13 @@ import logo from './logo.svg';
 import './App.css';
 import Nav from './components/Nav'
 import SimpleContainer from './components/Container';
-import { signInWithGoogle } from './firebase/firebase.utils';
-import { auth } from './firebase/firebase.utils';
+//import { signInWithGoogle } from './firebase/firebase.utils.js_bak';
+//import { auth } from './firebase/firebase.utils.js_bak';
 import Signin from './components/Signin';
+import AWS from 'aws-sdk';
+import { gapi } from 'gapi-script';
+import {GoogleLogin,GoogleLogout} from 'react-google-login';
 
-/*
-function App() {
-  return (
-    <div className="App">
-      <Nav/>
-      <SimpleContainer/>
-    </div>
-  );
-}
-*/
 
 
 
@@ -26,20 +19,50 @@ class App extends React.Component {
     super();
 
     this.state = {
-      currentUser: null
+      currentUser: null,
+      idToken: null,
+      s3: null
     };
+  }
+
+   start() {
+    console.log("initializing gapi client" + process.env.REACT_APP_PUBLIC_GOOGLE_CLIENT_ID);
+    gapi.auth2.init({
+      clientId: process.env.REACT_APP_PUBLIC_GOOGLE_CLIENT_ID
+    });
   }
 
   unsubscribeFromAuth = null;
 
-  componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user });
-    });
-  }
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
+   onSignoutSuccess = ()=>{
+    console.log("logging out");
+    this.setState({
+      currentUser:null
+    });
+   } 
+
+   onLoginSuccess = (res) => {
+    console.log('Login Success:', res);
+    
+
+    AWS.config.credentials = new AWS.WebIdentityCredentials({
+      RoleArn: process.env.REACT_APP_S3_ROLE_ARN,
+      WebIdentityToken: res.tokenObj.id_token // Access token from identity provider
+    });
+
+    var s3 = new AWS.S3({apiVersion: '2006-03-01', region: 'ap-southeast-2'});
+    console.log("s3 -> " + JSON.stringify(s3));
+    //setAwsToken(AWS.config.credentials);
+    this.setState({
+      currentUser:res.profileObj,
+      idToken: res.tokenObj.id_token,
+      s3: s3
+    });
+  };
+
+  componentDidMount() {
+    gapi.load('client:auth2', this.start);
   }
 
   render() {
@@ -51,18 +74,31 @@ class App extends React.Component {
 
             (<div>
 
-              <Nav photoURL={this.state.currentUser.photoURL}
-                displayName={this.state.currentUser.displayName}
+              <Nav photoURL={this.state.currentUser.imageUrl}
+                displayName={this.state.currentUser.name}
                 email={this.state.currentUser.email}
-                logout={() => auth.signOut()} />
-              <SimpleContainer key={this.state.currentUser.email} email={this.state.currentUser.email}/>
+                //logout={() => auth.signOut()} 
+                onSignoutSuccess={this.onSignoutSuccess}
+                />
+
+              <SimpleContainer key={this.state.currentUser.email} email={this.state.currentUser.email} s3={this.state.s3} />
             </div>
 
             ) :
-              <Signin login={signInWithGoogle}/>
-            
-
-        }
+            <Signin onSuccess={this.onLoginSuccess} onFailure={this.onLoginFailure}/>
+  }
+  {/*
+            <GoogleLogin
+                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                    buttonText="Log in with Google"
+                    onSuccess={this.onLoginSuccess}
+                    onFailure={this.onLoginFailure}
+                    cookiePolicy={'single_host_origin'}
+                    isSignedIn={true}
+                    plugin_name= "chat"
+                />
+                */
+                }
       </div >
     );
   }

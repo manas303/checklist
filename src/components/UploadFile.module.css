@@ -49,3 +49,23 @@
   .uploadFile{
     display: inline-block;
   }
+
+  @media only screen and (max-width: 1000px) {
+
+    .modal {
+      font-size: 12px;
+      background-color: #3163c7;
+      color: ivory;
+      width: 100%;
+    }
+
+    .popup-overlay {
+      background: rgba(0, 0, 0, 0.5);
+      width: 100%;
+    }
+
+    .popup-content {
+      width: max-content;
+    }
+  }
+  
