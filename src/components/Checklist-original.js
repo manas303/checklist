@@ -6,10 +6,6 @@ import UploadFile from './UploadFile.js'
 const getFormattedPrice = (price) => `$${price}`;
 
 export default (props) => {
-    const [toppings, setToppings] = useState(
-        []
-    );
-
     const dataURLToBlob = async (res)=>{
         console.log("blob before blobbing" + res);
         return await fetch(res).then(res=>res.blob());
@@ -17,10 +13,6 @@ export default (props) => {
 
     const blobToFile =  async(blob) => {
         return new File([blob], "File name",{ type: "image/png" });
-    }
-
-    const blobToFileWithName =  async(blob, filename) => {
-        return new File([blob], filename,{ type: blob.type });
     }
 
     const resize= function (size){
@@ -32,34 +24,6 @@ export default (props) => {
         
         return 400;
     }
-
-    const uploadToS3 = async imageFile=>{
-        var s3 = props.s3;
-        console.log("imageFile", imageFile)
-        var params = {
-            Bucket: 'manassrivastava-old', // your bucket name,
-            Key: `${props.email}/${props.id}/${imageFile.name}`, // path to the object you're looking for
-            ContentType: imageFile.type,
-            Body: imageFile
-          }
-          const data =  await s3.upload(params).promise();
-          console.log('uploaded at ', data.Key);
-          return data.Key;
-    }
-
-    const fetchFromS3 = async key=>{
-        var s3 = props.s3;
-        console.log("imageFile", key)
-        var params = {
-            Bucket: 'manassrivastava-old', // your bucket name,
-            Key: key
-          }
-     let data = await (s3.getObject(params).promise());
-     let objectData = new Blob([data.Body], {type: data.ContentType}); 
-     console.log("s3 data", objectData);
-     return blobToFileWithName(objectData, key);
-    }
-
 
     const resizeImage = async (imageFile, size = 400) => {
         //await uploadToS3(imageFile);
@@ -100,8 +64,56 @@ export default (props) => {
         })
     };
 
+    const [toppings, setToppings] = useState(
+        []
+    );
+
+    
+
+    const blobToFileWithName =  async(blob, filename) => {
+        return new File([blob], filename,{ type: blob.type });
+    }
+
+    const uploadToS3 = async (imageFile,imageName)=>{
+        var s3 = props.s3;
+        console.log("imageFile", imageFile)
+        console.log("imageFileName before substring", imageFile.name);
+        console.log("imageFileName after substring", imageName);
+
+        var params = {
+            Bucket: 'manassrivastava-old', // your bucket name,
+            Key: `${props.email}/${props.id}/${imageName}`, // path to the object you're looking for
+            ContentType: imageFile.type,
+            Body: imageFile
+          }
+          const data =  await s3.upload(params).promise();
+          console.log('uploaded at ', data.Key);
+          return data.Key;
+    }
+
+    const fetchFromS3 = async (key, i)=>{
+        var blob = {};
+        var s3 = props.s3;
+        console.log("imageFile", key)
+        var params = {
+            Bucket: 'manassrivastava-old', // your bucket name,
+            Key: key
+          }
+     let data = await (s3.getObject(params).promise());
+     let objectData = new Blob([data.Body], {type: data.ContentType}); 
+     console.log("s3 data", objectData);
+     blob.photo = await blobToFileWithName(objectData, key);
+     blob.index = i;
+     console.log("returning blob ", blob);
+     return blob
+    }
+
+
+    
     useEffect(() => {
         let mounted = true;
+        var promises = [];
+        var response = {};
         getData()
             .then(async(items) =>{
               for(var i = 0; i <  items.toppings.length; i++){
@@ -109,20 +121,42 @@ export default (props) => {
                         console.log(" the item is" + items.toppings[i].name + 
                         " and photo url is  " +  items.toppings[i].photo);
                     //  items.toppings[i].photo =  await dataURLToBlob(items.toppings[i].photo).then(blob=>blobToFile(blob));
-                      items.toppings[i].photo =  await fetchFromS3(items.toppings[i].photo);
+                      var fetchs3promise = fetchFromS3(items.toppings[i].photo, i);
+                      items.toppings[i].photo =  fetchs3promise;
+
+                      promises.push(fetchs3promise);
                       console.log('photo changed to ' + items.toppings[i].photo);
                     }
-              }  
-              return items;
+              }
+              response.items = items;  
+              response.promises = promises;
+              console.log("response of promises is ", response)
+              return response;
             })
-            .then(items => {
-               // console.log("useEffect response received", JSON.stringify(items));
-                setToppings((toppingsOld) => {
-                    return (items.toppings != null && items.toppings.length > 0) ? items.toppings : toppingsOld
-                });
-                setTotal(items.total);
-            }
-            )
+            .then(response=>{
+                Promise.all(response.promises)
+                .then(results => {
+                    console.log("promise result array => ", results)
+                     for(var j=0; j<response.items.toppings.length; j++){
+                        for(var i=0; i< results.length;i++){
+                            if(results[i].index == j){
+                                console.log("setting promise photo", results[i].photo);
+                                response.items.toppings[j].photo = results[i].photo;
+                            }
+                        }
+                            
+                        }
+                    return response.items
+                }).then(items => {
+                    // console.log("useEffect response received", JSON.stringify(items));
+                     setToppings((toppingsOld) => {
+                         return (items.toppings != null && items.toppings.length > 0) ? items.toppings : toppingsOld
+                     });
+                     setTotal(items.total);
+                 }
+                 )
+            })
+            
         //return false;
     }, []);
 
@@ -337,10 +371,12 @@ export default (props) => {
         for (var key in result) {
             if (typeof result[key] === 'object') {
                 if(!(result[key] instanceof File || result[key] instanceof Blob)){
-                    result[key] = await convertToBase64AndFlatten(result[key], result);
+                    result[key] = await convertToBase64AndFlatten(result[key]);
                 }else{
                     console.log(key + " value is instance of file" )
-                    result[key] = await uploadToS3(result[key]);
+                    var imageName = result[key].name.substring(result[key].name.lastIndexOf('/')+1);
+                    uploadToS3(result[key],imageName);
+                    result[key] = `${props.email}/${props.id}/${imageName}`;
                     console.log('key[value] is ' + result[key] );
                 }
                 
