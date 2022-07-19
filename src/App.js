@@ -20,7 +20,7 @@ class App extends React.Component {
 
     this.state = {
       currentUser: null,
-      idToken: null,
+      tokenObj: null,
       s3: null
     };
   }
@@ -56,7 +56,7 @@ class App extends React.Component {
     //setAwsToken(AWS.config.credentials);
     this.setState({
       currentUser:res.profileObj,
-      idToken: res.tokenObj.id_token,
+      tokenObj: res.tokenObj,
       s3: s3
     });
   };
@@ -81,7 +81,7 @@ class App extends React.Component {
                 onSignoutSuccess={this.onSignoutSuccess}
                 />
 
-              <SimpleContainer key={this.state.currentUser.email} email={this.state.currentUser.email} s3={this.state.s3} />
+              <SimpleContainer key={this.state.currentUser.email} email={this.state.currentUser.email} s3={this.state.s3} tokenObj={this.state.tokenObj}/>
             </div>
 
             ) :

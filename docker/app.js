@@ -4,12 +4,14 @@ exports.handler = async (event, context, call) => {
     console.log("Incoming request " + JSON.stringify(event));
     //console.log("Incoming request " + JSON.stringify(event));
     var bdy = JSON.parse(event.body);
-    var origin = null;
+    var origin = process.env.ORIGIN || null;
     var allowedHeaders = ["https://manassrivastava.com","http://localhost:3002","https://manas303.github.io",
                         "http://localhost:3000", "http://localhost:3001"]
-    if(allowedHeaders.some(substring=> event.headers.origin.includes(substring))){
+    if(origin == null && allowedHeaders.some(substring=> event.headers.origin.includes(substring))){
         origin = event.headers.origin
     }
+    console.log("headers are", JSON.stringify(event.headers));
+    console.log("origin is ", origin);
     if(bdy== null){
         const response = {
             statusCode: 200,
